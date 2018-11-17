@@ -210,8 +210,9 @@ public class Jatme88 extends JatmeX8Model {
   }
 }
 public abstract class JatmeInstruction {
-  // Loads parameters from raw opcode. Returns true if word after is used.
-  public abstract boolean paramsFromOpcode(int word, int wordAfter);
-  // Returns true when finished 
+  // Returns true if the instruction uses a second word.
+  public abstract boolean extraWord();
+  // Returns true when finished
+  // Otherwise called again next cycle with relativeCycle incremented
   public abstract boolean execute(JatmeX8 state, int relativeCycle);
 }
