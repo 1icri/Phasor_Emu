@@ -112,6 +112,9 @@ public abstract class JatmeX8Model {
   abstract int mapRegIo(int index);
   abstract int mapRegExtIo(int index);
   abstract int mapSram(int index);
+  abstract boolean selfPrgEn(byte extFuseIn);
+  abstract boolean bootRst(byte extFuseIn);
+  abstract int bootSz(byte extFuseIn);
 }
 public class Jatme48 extends JatmeX8Model {
   public int flashPageSize() {
@@ -150,6 +153,15 @@ public class Jatme48 extends JatmeX8Model {
   public int mapSram(int index) {
     return 256+index;
   }
+  public boolean selfPrgEn(byte extFuseIn){
+    return (extFuseIn&1)==0;
+  }
+  public boolean bootRst(byte extFuseIn){
+    return false;
+  }
+  public int bootSz(byte extFuseIn){
+    return 0;
+  }
 }
 public class Jatme88 extends JatmeX8Model {
   public int flashPageSize() {
@@ -187,6 +199,15 @@ public class Jatme88 extends JatmeX8Model {
   }
   public int mapSram(int index) {
     return 256+index;
+  }
+  public boolean selfPrgEn(byte extFuseIn){
+    return true;
+  }
+  public boolean bootRst(byte extFuseIn){
+    return (extFuseIn&1)==0;
+  }
+  public int bootSz(byte extFuseIn){
+    return 2048>>((int)(extFuseIn&6)>>1);
   }
 }
 public abstract class JatmeInstruction {
