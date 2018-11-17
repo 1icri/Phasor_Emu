@@ -25,7 +25,6 @@ public class JatmeX8 {
   }
 
   public void programFuseLow(byte value) {
-    
   }
 
   // Writes flash contents all at once, no erase and no page operations emulated.
@@ -112,9 +111,9 @@ public abstract class JatmeX8Model {
   abstract int mapRegIo(int index);
   abstract int mapRegExtIo(int index);
   abstract int mapSram(int index);
-  abstract boolean selfPrgEn(byte extFuseIn);
-  abstract boolean bootRst(byte extFuseIn);
-  abstract int bootSz(byte extFuseIn);
+  abstract boolean selfPrgEn(byte extFuse);
+  abstract boolean bootRst(byte extFuse);
+  abstract int bootSz(byte extFuse);
 }
 public class Jatme48 extends JatmeX8Model {
   public int flashPageSize() {
@@ -153,13 +152,13 @@ public class Jatme48 extends JatmeX8Model {
   public int mapSram(int index) {
     return 256+index;
   }
-  public boolean selfPrgEn(byte extFuseIn){
-    return (extFuseIn&1)==0;
+  public boolean selfPrgEn(byte extFuse) {
+    return (extFuse&1)==0;
   }
-  public boolean bootRst(byte extFuseIn){
+  public boolean bootRst(byte extFuse) {
     return false;
   }
-  public int bootSz(byte extFuseIn){
+  public int bootSz(byte extFuse) {
     return 0;
   }
 }
@@ -200,14 +199,14 @@ public class Jatme88 extends JatmeX8Model {
   public int mapSram(int index) {
     return 256+index;
   }
-  public boolean selfPrgEn(byte extFuseIn){
+  public boolean selfPrgEn(byte extFuse) {
     return true;
   }
-  public boolean bootRst(byte extFuseIn){
-    return (extFuseIn&1)==0;
+  public boolean bootRst(byte extFuse) {
+    return (extFuse&1)==0;
   }
-  public int bootSz(byte extFuseIn){
-    return 2048>>((int)(extFuseIn&6)>>1);
+  public int bootSz(byte extFuse) {
+    return 2048>>((int)(extFuse&6)>>1);
   }
 }
 public abstract class JatmeInstruction {
